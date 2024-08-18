@@ -34,7 +34,7 @@ const HomePage: React.FC = () => {
           <h2 className="text-3xl font-bold text-primary-600 dark:text-primary-400">
             Who am I?
           </h2>
-          <p className="mt-4 text-lg text-gray-700 dark:text-gray-300">
+          <p className="mt-4 text-lg text-base dark:text-inverted">
             I'm a software developer specializing in web development, DevOps,
             and clinical trial data management. With expertise in Python,
             JavaScript, AWS, and more, I build scalable solutions for complex
@@ -51,7 +51,7 @@ const HomePage: React.FC = () => {
           <h2 className="text-3xl font-bold text-primary-600 dark:text-primary-400">
             Latest Work
           </h2>
-          <p className="mt-4 text-lg text-gray-700 dark:text-gray-300">
+          <p className="mt-4 text-lg text-base dark:text-inverted">
             Recently, I developed an LLM model API server, automated
             infrastructure with Terraform, and migrated legacy systems to modern
             architectures like React and Express.
