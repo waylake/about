@@ -5,7 +5,7 @@ import { FaCode, FaServer, FaCloud, FaBriefcase } from "react-icons/fa";
 export const MediaiplusCard: React.FC = () => {
   return (
     <motion.div
-      className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-6"
+      className="bg-white/70 dark:bg-gray-800/70 rounded-lg shadow-lg p-6 mb-6 backdrop-blur-lg"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
