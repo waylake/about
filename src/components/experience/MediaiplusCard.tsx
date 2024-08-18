@@ -84,7 +84,7 @@ export const MediaiplusCard: React.FC = () => {
 export const skills = [
   {
     name: "Frontend",
-    level: 90,
+    level: 30,
     icon: <FaCode />,
     children: [
       { name: "React", level: 95, icon: <FaCode /> },
@@ -94,7 +94,7 @@ export const skills = [
   },
   {
     name: "Backend",
-    level: 85,
+    level: 40,
     icon: <FaServer />,
     children: [
       { name: "Node.js", level: 90, icon: <FaServer /> },
@@ -104,7 +104,7 @@ export const skills = [
   },
   {
     name: "DevOps",
-    level: 80,
+    level: 45,
     icon: <FaCloud />,
     children: [
       { name: "AWS", level: 85, icon: <FaCloud /> },
