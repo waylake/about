@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Github, ExternalLink } from "lucide-react";
 
-interface ProjectCardProps {
+export interface ProjectCardProps {
   title: string;
   description: string;
   imageUrl: string;

@@ -2,9 +2,10 @@ import React from "react";
 import ProjectCard from "../components/ProjectCard";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { useImageLoader } from "../hooks/useImageLoader";
+import { ProjectCardProps } from "../components/ProjectCard";
 
 const ProjectsPage: React.FC = () => {
-  const projectsData = [
+  const projectsData: ProjectCardProps[] = [
     {
       title: "Sakura Link Tree",
       description:
