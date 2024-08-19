@@ -12,6 +12,7 @@ const ProjectsPage: React.FC = () => {
       imageUrl:
         "https://raw.githubusercontent.com/waylake/tree-waylake/main/screenshots/screenshot1.png",
       projectUrl: "https://tree-waylake.vercel.app/",
+      githubUrl: "https://github.com/waylake/tree-waylake",
     },
     {
       title: "Sakura Gallery",
@@ -20,6 +21,7 @@ const ProjectsPage: React.FC = () => {
       imageUrl:
         "https://raw.githubusercontent.com/waylake/sakura-gallery/main/background-1.png",
       projectUrl: "https://sakura-gallery.vercel.app/",
+      githubUrl: "https://github.com/waylake/sakura-gallery",
     },
     {
       title: "Sakura Type",
@@ -28,6 +30,7 @@ const ProjectsPage: React.FC = () => {
       imageUrl:
         "https://raw.githubusercontent.com/waylake/sakura-type/main/screenshot.png",
       projectUrl: "https://sakura-type.vercel.app/",
+      githubUrl: "https://github.com/waylake/sakura-type.git",
     },
   ];
 
