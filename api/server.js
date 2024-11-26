@@ -1,4 +1,5 @@
 import fs from "node:fs/promises";
+import path from "path";
 import express from "express";
 import { createClient } from "contentful";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
@@ -16,23 +17,15 @@ const contentfulClient = createClient({
   accessToken: process.env.VITE_CONTENTFUL_ACCESS_TOKEN || "",
 });
 
-const templateHtml = isProduction
-  ? await fs.readFile("./dist/client/index.html", "utf-8")
-  : "";
+// 절대 경로 설정
+const distPath = path.join(process.cwd(), "dist", "client");
+const indexHtml = path.join(distPath, "index.html");
 
 const app = express();
 
-// 프로덕션 환경에서 정적 파일 제공
+// 정적 파일 제공 설정
 if (isProduction) {
-  const compression = (await import("compression")).default;
-  const sirv = (await import("sirv")).default;
-
-  app.use(base, (req, res, next) => {
-    console.log("Static file requested:", req.originalUrl);
-    next();
-  });
-
-  app.use(base, sirv("./dist/client", { extensions: ["html"] }));
+  app.use(base, express.static(distPath, { index: false }));
 }
 
 let vite;
@@ -43,7 +36,6 @@ if (!isProduction) {
     appType: "custom",
     base,
   });
-
   app.use(vite.middlewares);
 }
 
@@ -58,16 +50,13 @@ app.use("*", async (req, res) => {
     // 특정 포스트 데이터 로드
     if (url.startsWith("blog/")) {
       const slug = url.split("blog/")[1];
-      console.log(`Fetching post data for slug: ${slug}`);
       try {
         const response = await contentfulClient.getEntries({
           content_type: "blog",
           "fields.slug": slug,
           limit: 1,
         });
-
         const item = response.items[0];
-        console.log(item);
         if (item) {
           postMeta = {
             title: item.fields.title || "",
@@ -77,8 +66,6 @@ app.use("*", async (req, res) => {
             coverImage: item.fields.coverImage?.fields?.file?.url || "",
             publishDate: item.fields.publishDate || new Date().toISOString(),
           };
-        } else {
-          console.warn(`Post not found for slug: ${slug}`);
         }
       } catch (err) {
         console.error("Error fetching post data:", err);
@@ -90,13 +77,16 @@ app.use("*", async (req, res) => {
       template = await vite.transformIndexHtml(url, template);
       render = (await vite.ssrLoadModule("./src/entry-server.tsx")).render;
     } else {
-      template = templateHtml;
-      render = (await import("./dist/server/entry-server.js")).render;
+      try {
+        template = await fs.readFile(indexHtml, "utf-8");
+        render = (await import("./dist/server/entry-server.js")).render;
+      } catch (err) {
+        console.error("Error reading index.html:", err);
+        return res.status(500).send("Server Error");
+      }
     }
 
     const rendered = await render(url, postMeta);
-
-    // 서버에서 로드한 데이터를 클라이언트에 전달
     const html = template
       .replace("<!--app-head-->", rendered.head ?? "")
       .replace("<!--app-html-->", rendered.html ?? "")
@@ -104,9 +94,6 @@ app.use("*", async (req, res) => {
         "<!--app-state-->",
         `<script>window.__INITIAL_DATA__ = ${JSON.stringify(postMeta)};</script>`,
       );
-
-    // 디버깅용 로그
-    console.log("Initial Data Sent:", JSON.stringify(postMeta, null, 2));
 
     res.status(200).set({ "Content-Type": "text/html" }).send(html);
   } catch (e) {
@@ -118,3 +105,5 @@ app.use("*", async (req, res) => {
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
+
+export default app;
