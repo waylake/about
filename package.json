@@ -2,13 +2,14 @@
   "name": "what-i-built",
   "private": true,
   "version": "0.0.0",
+  "main": "api/server.js",
   "type": "module",
   "scripts": {
     "dev": "node server",
     "build": "npm run build:client && npm run build:server",
     "build:client": "vite build --outDir dist/client",
     "build:server": "vite build --ssr src/entry-server.tsx --outDir dist/server",
-    "preview": "cross-env NODE_ENV=production node server"
+    "preview": "cross-env NODE_ENV=production node api/server.js"
   },
   "dependencies": {
     "@contentful/rich-text-html-renderer": "^17.0.0",

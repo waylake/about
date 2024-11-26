@@ -1,15 +1,11 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "server.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "dist/**",
-      "use": "@vercel/static"
+  "functions": {
+    "api/server.js": {
+      "runtime": "@vercel/node@3.0.0",
+      "maxDuration": 10
     }
-  ],
+  },
   "rewrites": [
     {
       "source": "/assets/:path*",
@@ -20,28 +16,28 @@
       "destination": "/api/:path*"
     },
     {
-      "source": "/blog/:slug",
-      "destination": "/server.js"
+      "source": "/blog/:slug*",
+      "destination": "/api/server.js"
     },
     {
       "source": "/about",
-      "destination": "/server.js"
+      "destination": "/api/server.js"
     },
     {
       "source": "/projects",
-      "destination": "/server.js"
+      "destination": "/api/server.js"
     },
     {
       "source": "/contact",
-      "destination": "/server.js"
+      "destination": "/api/server.js"
     },
     {
       "source": "/blog",
-      "destination": "/server.js"
+      "destination": "/api/server.js"
     },
     {
       "source": "/(.*)",
-      "destination": "/server.js"
+      "destination": "/api/server.js"
     }
   ],
   "headers": [
