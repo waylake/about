@@ -15,46 +15,55 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [theme, setTheme] = useState<Theme>(() => {
-    const savedTheme = localStorage.getItem("theme") as Theme | null;
-    return savedTheme || "system";
+    if (typeof window !== "undefined") {
+      const savedTheme = localStorage.getItem("theme") as Theme | null;
+      return savedTheme || "system";
+    }
+    return "system"; // 서버에서 기본값 반환
   });
 
   const [effectiveTheme, setEffectiveTheme] = useState<EffectiveTheme>("light");
 
   const applyTheme = (newTheme: EffectiveTheme) => {
     setEffectiveTheme(newTheme);
-    if (newTheme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
+    if (typeof window !== "undefined") {
+      if (newTheme === "dark") {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
     }
   };
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    if (typeof window !== "undefined") {
+      const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
 
-    const handleChange = () => {
-      if (theme === "system") {
-        applyTheme(mediaQuery.matches ? "dark" : "light");
-      }
-    };
+      const handleChange = () => {
+        if (theme === "system") {
+          applyTheme(mediaQuery.matches ? "dark" : "light");
+        }
+      };
 
-    handleChange();
-    mediaQuery.addEventListener("change", handleChange);
+      handleChange();
+      mediaQuery.addEventListener("change", handleChange);
 
-    return () => mediaQuery.removeEventListener("change", handleChange);
+      return () => mediaQuery.removeEventListener("change", handleChange);
+    }
   }, [theme]);
 
   useEffect(() => {
-    if (theme !== "system") {
-      localStorage.setItem("theme", theme);
-      applyTheme(theme);
-    } else {
-      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
-        .matches
-        ? "dark"
-        : "light";
-      applyTheme(systemTheme);
+    if (typeof window !== "undefined") {
+      if (theme !== "system") {
+        localStorage.setItem("theme", theme);
+        applyTheme(theme);
+      } else {
+        const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
+          .matches
+          ? "dark"
+          : "light";
+        applyTheme(systemTheme);
+      }
     }
   }, [theme]);
 

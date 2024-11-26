@@ -22,7 +22,7 @@ const HomePage: React.FC = () => {
         exit="out"
         variants={pageVariants}
         transition={pageTransition}
-        className="flex flex-col justify-between px-12 py-20 space-y-12"
+        className="flex flex-col justify-between px-container py-section space-y-12"
       >
         <motion.div
           initial={{ opacity: 0, x: -50 }}
@@ -30,10 +30,10 @@ const HomePage: React.FC = () => {
           transition={{ duration: 0.6 }}
           className="max-w-md"
         >
-          <h2 className="text-3xl font-bold text-primary-600 dark:text-primary-400">
+          <h2 className="text-h2 font-bold text-primary dark:text-primary-400 transition-colors">
             Who am I?
           </h2>
-          <p className="mt-4 text-lg text-base dark:text-inverted">
+          <p className="mt-4 text-body-lg text-text-base-light dark:text-text-base-dark backdrop-blur-sm bg-background-card-light/30 dark:bg-background-card-dark/30 p-4 rounded-lg shadow-card">
             I'm a software developer specializing in web development, DevOps,
             and clinical trial data management. With expertise in Python,
             JavaScript, AWS, and more, I build scalable solutions for complex
@@ -47,13 +47,13 @@ const HomePage: React.FC = () => {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="max-w-md self-end"
         >
-          <h2 className="text-3xl font-bold text-primary-600 dark:text-primary-400">
+          <h2 className="text-h2 font-bold text-primary dark:text-primary-400">
             MBTI: INTP
           </h2>
-          <h3 className="text-xl font-semibold mt-2 text-secondary-500 dark:text-secondary-400">
+          <h3 className="text-h4 font-semibold mt-2 text-secondary dark:text-secondary-dark">
             "The Contemplative Craftsman"
           </h3>
-          <p className="mt-4 text-lg text-base dark:text-inverted">
+          <p className="mt-4 text-body-lg text-text-base-light dark:text-text-base-dark backdrop-blur-sm bg-background-card-light/30 dark:bg-background-card-dark/30 p-4 rounded-lg shadow-card">
             As an INTP, I'm an innovative thinker with an insatiable thirst for
             knowledge. I excel at solving complex problems through logical
             reasoning and creative ideation. My ability to think outside the box

@@ -6,6 +6,9 @@ import LoadingSpinner from "./components/LoadingSpinner";
 const HomePage = React.lazy(() => import("./pages/HomePage"));
 const ProjectsPage = React.lazy(() => import("./pages/ProjectsPage"));
 const ContactPage = React.lazy(() => import("./pages/ContactPage"));
+const AboutPage = React.lazy(() => import("./pages/AboutPage"));
+const BlogPage = React.lazy(() => import("./pages/BlogPage"));
+const BlogPostPage = React.lazy(() => import("./pages/BlogPostPage"));
 
 const AnimatedRoutes: React.FC = () => {
   const location = useLocation();
@@ -34,6 +37,30 @@ const AnimatedRoutes: React.FC = () => {
           element={
             <React.Suspense fallback={<LoadingSpinner />}>
               <ContactPage />
+            </React.Suspense>
+          }
+        />
+        <Route
+          path="/about"
+          element={
+            <React.Suspense fallback={<LoadingSpinner />}>
+              <AboutPage />
+            </React.Suspense>
+          }
+        />
+        <Route
+          path="/blog"
+          element={
+            <React.Suspense fallback={<LoadingSpinner />}>
+              <BlogPage />
+            </React.Suspense>
+          }
+        />
+        <Route
+          path="/blog/:slug"
+          element={
+            <React.Suspense fallback={<LoadingSpinner />}>
+              <BlogPostPage />
             </React.Suspense>
           }
         />

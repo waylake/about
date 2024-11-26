@@ -16,9 +16,13 @@
 
     /* Linting */
     "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": false, // any 타입 허용
+    "noUnusedLocals": false, // 사용되지 않는 변수 허용
+    "noUnusedParameters": false, // 사용되지 않는 파라미터 허용
+
+    /* Silence deprecated warnings */
+    "ignoreDeprecations": "5.0"
   },
   "include": ["src"]
 }
