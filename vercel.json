@@ -1,22 +1,26 @@
 {
   "version": 2,
-  "functions": {
-    "server.js": {
-      "runtime": "@vercel/node@3.0.0",
-      "maxDuration": 10
+  "builds": [
+    {
+      "src": "server.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "dist/**",
+      "use": "@vercel/static"
     }
-  },
+  ],
   "rewrites": [
     {
       "source": "/assets/:path*",
       "destination": "/assets/:path*"
     },
     {
-      "source": "/:path*",
-      "destination": "/:path*"
+      "source": "/api/:path*",
+      "destination": "/api/:path*"
     },
     {
-      "source": "/blog/:slug*",
+      "source": "/blog/:slug",
       "destination": "/server.js"
     },
     {
