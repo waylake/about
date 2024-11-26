@@ -17,26 +17,16 @@ const contentfulClient = createClient({
   accessToken: process.env.VITE_CONTENTFUL_ACCESS_TOKEN || "",
 });
 
-// 절대 경로 설정
-const distPath = path.join(process.cwd(), "dist", "client");
-const indexHtml = path.join(distPath, "index.html");
+// Vercel 환경에서의 경로 설정
+const DIST_PATH = path.join(process.cwd(), "dist");
+const CLIENT_PATH = path.join(DIST_PATH, "client");
+const SERVER_PATH = path.join(DIST_PATH, "server");
 
 const app = express();
 
 // 정적 파일 제공 설정
 if (isProduction) {
-  app.use(base, express.static(distPath, { index: false }));
-}
-
-let vite;
-if (!isProduction) {
-  const { createServer } = await import("vite");
-  vite = await createServer({
-    server: { middlewareMode: true },
-    appType: "custom",
-    base,
-  });
-  app.use(vite.middlewares);
+  app.use(base, express.static(CLIENT_PATH, { index: false }));
 }
 
 // 모든 요청 처리
@@ -73,16 +63,27 @@ app.use("*", async (req, res) => {
     }
 
     if (!isProduction) {
-      template = await fs.readFile("./index.html", "utf-8");
-      template = await vite.transformIndexHtml(url, template);
-      render = (await vite.ssrLoadModule("./src/entry-server.tsx")).render;
+      const vite = await import("vite");
+      const server = await vite.createServer({
+        server: { middlewareMode: true },
+        appType: "custom",
+        base,
+      });
+      app.use(server.middlewares);
+      template = await fs.readFile("index.html", "utf-8");
+      template = await server.transformIndexHtml(url, template);
+      render = (await server.ssrLoadModule("src/entry-server.tsx")).render;
     } else {
       try {
-        template = await fs.readFile(indexHtml, "utf-8");
-        render = (await import("./dist/server/entry-server.js")).render;
+        template = await fs.readFile(
+          path.join(CLIENT_PATH, "index.html"),
+          "utf-8",
+        );
+        render = (await import(path.join(SERVER_PATH, "entry-server.js")))
+          .render;
       } catch (err) {
-        console.error("Error reading index.html:", err);
-        return res.status(500).send("Server Error");
+        console.error("Error reading files:", err);
+        return res.status(500).send("Server Error - Check file paths");
       }
     }
 
@@ -98,12 +99,8 @@ app.use("*", async (req, res) => {
     res.status(200).set({ "Content-Type": "text/html" }).send(html);
   } catch (e) {
     console.error("SSR Error:", e);
-    res.status(500).end(e.stack);
+    res.status(500).send(`Server Error: ${e.message}`);
   }
-});
-
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
 });
 
 export default app;

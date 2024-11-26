@@ -5,15 +5,12 @@
   "framework": null,
   "functions": {
     "api/server.js": {
+      "runtime": "@vercel/node@3.0.0",
       "memory": 1024,
       "maxDuration": 10
     }
   },
   "rewrites": [
-    {
-      "source": "/assets/:path*",
-      "destination": "/assets/:path*"
-    },
     {
       "source": "/(.*)",
       "destination": "/api/server.js"
